@@ -17,8 +17,8 @@ const Modal = (props: ModalProps) => {
         <Background onClick={onClose}>
           <ModalContainer onClick={(e) => e.stopPropagation()}>
             <HeadArea>
-              <div />
               <TitleArea>{header}</TitleArea>
+              {/* X 버튼 아이콘 적용필요 */}
               <CloseButton onClick={onClose}>X</CloseButton>
             </HeadArea>
             <ContentsArea>{contents}</ContentsArea>
