@@ -30,7 +30,7 @@ const NavBar = () => {
         visible={visible}
         header="로그인"
         onClose={closeLogin}
-        contents={<Login />}
+        contents={<Login closeModal={closeLogin} />}
       />
     </>
   )
