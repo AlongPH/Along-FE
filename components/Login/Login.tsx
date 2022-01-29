@@ -8,6 +8,7 @@ import {
   LabelContents,
 } from './style'
 import LoginProps from './interface'
+import axios from 'axios'
 
 const Login = ({ closeModal }: LoginProps) => {
   const [id, setId] = useState<string>('')
@@ -19,6 +20,16 @@ const Login = ({ closeModal }: LoginProps) => {
   const onChangePw = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPw(() => e.target.value)
   }, [])
+
+  const handleClickLogin = useCallback(
+    async (e: React.MouseEventHandler<HTMLButtonElement>) => {
+      console.log('id', id, 'pw', pw)
+      // axios
+      const data = await axios.get('http://localhost:4000/users')
+      console.log('data', data)
+    },
+    [id, pw]
+  )
 
   return (
     <>
@@ -38,7 +49,7 @@ const Login = ({ closeModal }: LoginProps) => {
         />
       </FormContainer>
       <ButtonContainer>
-        <LoginButton>로그인</LoginButton>
+        <LoginButton onClick={handleClickLogin}>로그인</LoginButton>
         {/* <LabelContents>
           아직 회원이 아니신가요?
           <ClickLabel onClick={closeModal}>
@@ -48,7 +59,7 @@ const Login = ({ closeModal }: LoginProps) => {
         <LabelContents>
           비밀번호를 잊으셨나요?
           <div onClick={closeModal}>
-            <Link href={'/pw/find'}> 비밀번호 찾기</Link>
+            <Link href={'/pw/find'}>비밀번호 찾기</Link>
           </div>
         </LabelContents>
       </ButtonContainer>
