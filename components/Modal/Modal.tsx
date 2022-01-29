@@ -11,6 +11,7 @@ import {
 
 const Modal = (props: ModalProps) => {
   const { visible, header, onClose, contents } = props
+
   return (
     <>
       {visible ? (

@@ -9,8 +9,9 @@ export const Container = styled.div`
 `
 
 export const Main = styled.div`
-  font-size: 3vh;
+  /* font-size: 3vh; */
   flex-grow: 1;
+  padding-left: 20px;
   :hover {
     cursor: pointer;
   }
