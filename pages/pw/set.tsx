@@ -1,7 +1,8 @@
 import React from 'react'
+import SetPassword from '../../components/SetPassword/SetPassword'
 
 const set = () => {
-  return <div>비밀번호 재설정</div>
+  return <SetPassword />
 }
 
 export default set

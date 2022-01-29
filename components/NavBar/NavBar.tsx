@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Main, Container, SearchField, Button } from './style'
 import Modal from '../Modal/Modal'
 import Login from '../Login/Login'
@@ -18,7 +19,9 @@ const NavBar = () => {
     <>
       <Container>
         <Link href={'/'}>
-          <Main>Along</Main>
+          <Main>
+            <Image src="/img/Along_logo.png" height={50} width={200} />
+          </Main>
         </Link>
         <SearchField />
         <Button onClick={clickLogin}>로그인</Button>
