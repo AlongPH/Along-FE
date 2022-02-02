@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import LabelInput from '../LabelInput/LabelInput'
 import {
@@ -11,42 +11,48 @@ import LoginProps from './interface'
 import axios from 'axios'
 
 const Login = ({ closeModal }: LoginProps) => {
-  const [id, setId] = useState<string>('')
-  const [pw, setPw] = useState<string>('')
+  const [user, setUser] = useState<{ id: string; pw: string }>({
+    id: '',
+    pw: '',
+  })
 
-  const onChangeId = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setId(() => e.target.value)
-  }, [])
-  const onChangePw = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPw(() => e.target.value)
-  }, [])
-
-  const handleClickLogin = useCallback(
-    async (e: React.MouseEventHandler<HTMLButtonElement>) => {
-      console.log('id', id, 'pw', pw)
-      // axios
-      const data = await axios.get('http://localhost:4000/users')
-      console.log('data', data)
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target
+      setUser({
+        ...user,
+        [name]: value,
+      })
     },
-    [id, pw]
+    [user]
   )
+
+  const handleClickLogin = useCallback(async () => {
+    // axios
+    const data = await axios.get('http://localhost:4000/users')
+    console.log('data', data)
+  }, [])
+
+  const LabelInfo = useMemo(() => {
+    return [
+      { name: 'id', text: '아이디' },
+      { name: 'pw', text: '비밀번호', type: 'password' },
+    ]
+  }, [])
 
   return (
     <>
-      {/* LabelContainer나 LabelInput등의 공통컴포넌트로 변경 */}
-
       <FormContainer>
-        <LabelInput
-          text="아이디"
-          value={id}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeId(e)}
-        />
-        <LabelInput
-          text="비밀번호"
-          value={pw}
-          type="password"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePw(e)}
-        />
+        {LabelInfo.map((v) => (
+          <LabelInput
+            key={v.name}
+            name={v.name}
+            text={v.text}
+            type={v?.type}
+            value={user[v.name]}
+            onChange={handleChange}
+          />
+        ))}
       </FormContainer>
       <ButtonContainer>
         <LoginButton onClick={handleClickLogin}>로그인</LoginButton>
