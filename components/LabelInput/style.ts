@@ -12,11 +12,19 @@ export const LabelContainer = styled.div`
   font-size: 15px;
 `
 
-export const InputContainer = styled.input`
+export const InputContainer = styled.input<{ isError: boolean }>`
   margin-left: 20px;
   margin-right: 20px;
   font-size: 25px;
   border: none;
   outline: none;
-  border-bottom: 1px solid black;
+  border-bottom: ${(props) =>
+    props.isError ? `1px solid red` : `1px solid black`};
+  ::placeholder {
+    font-size: 15px;
+  }
+`
+export const ErrorContainer = styled.div`
+  padding-left: 20px;
+  color: red;
 `
