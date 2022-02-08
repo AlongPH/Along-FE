@@ -15,44 +15,61 @@ const Login = ({ closeModal }: LoginProps) => {
     id: '',
     pw: '',
   })
+  const [id, setId] = useState('')
+  const [pw, setPw] = useState('')
 
-  const handleChange = useCallback(
+  const handleChangeId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target
-      setUser({
-        ...user,
-        [name]: value,
-      })
+      const { value } = e.target
+      setId(value)
     },
-    [user]
+    []
   )
 
+  const handleChangePw = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target
+      setPw(value)
+    },
+    []
+  )
+  const handleClickEnter = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        handleClickLogin()
+      }
+    },
+    []
+  )
   const handleClickLogin = useCallback(async () => {
     // axios
-    const data = await axios.get('http://localhost:4000/users')
-    console.log('data', data)
-  }, [])
-
-  const LabelInfo = useMemo(() => {
-    return [
-      { name: 'id', text: '아이디' },
-      { name: 'pw', text: '비밀번호', type: 'password' },
-    ]
+    const user = {
+      userId: id,
+      userPw: pw,
+    }
+    await axios
+      .post('http://192.168.1.4:3000/member/login', user)
+      .then((res) => {
+        const { data } = res
+        alert(data?.success)
+      })
+      .catch((e) => console.log(e))
   }, [])
 
   return (
     <>
       <FormContainer>
-        {LabelInfo.map((v) => (
-          <LabelInput
-            key={v.name}
-            name={v.name}
-            text={v.text}
-            type={v?.type}
-            value={user[v.name]}
-            onChange={handleChange}
-          />
-        ))}
+        <LabelInput text="아이디" value={id} onChange={handleChangeId} />
+        <LabelInput
+          text="비밀번호"
+          value={pw}
+          type="password"
+          onChange={handleChangePw}
+          onKeyPress={handleClickEnter}
+          isError
+          errorMessage="test"
+          placeHolder="영문+숫자+특수문자를 8~20자 입력하세요"
+        />
       </FormContainer>
       <ButtonContainer>
         <LoginButton onClick={handleClickLogin}>로그인</LoginButton>

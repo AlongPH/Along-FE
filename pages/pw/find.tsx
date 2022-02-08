@@ -12,45 +12,105 @@ const FindPassword = () => {
       email: '',
     }
   )
-  const handleChange = useCallback(
+  // input field state
+  const [id, setId] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+
+  // Error state
+  const [idError, setIdError] = useState<boolean>(false)
+  const [nameError, setNameError] = useState<boolean>(false)
+  const [emailError, setEmailError] = useState<boolean>(false)
+
+  const handleChangeId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target
-      setInfo({
-        ...info,
-        [name]: value,
-      })
+      const newValue = e.target.value
+      const regId = /^[a-z0-9+]*$/
+      setId(newValue)
+      if (!regId.test(newValue) || newValue.length === 0) {
+        setIdError(true)
+      } else {
+        setIdError(false)
+      }
     },
-    [info]
+    [idError]
+  )
+
+  const handleChangeName = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value
+      setName(newValue)
+      if (2 <= newValue.length && newValue.length <= 8) {
+        setNameError(false)
+      } else setNameError(true)
+    },
+    [nameError]
+  )
+
+  // /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+  const handleChangeEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value
+      const regEmail =
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+
+      setEmail(newValue)
+      if (regEmail.test(newValue)) {
+        setEmailError(false)
+      } else setEmailError(true)
+    },
+    [emailError]
   )
 
   const handleClickFind = useCallback(async () => {
-    await axios.post('http://localhost:4000/users', info).then((res) => {
-      console.log(res)
-      Router.push('/pw/set')
-    })
-  }, [])
+    if (hasError) {
+      alert('양식에 맞게 입력해주세요.')
+      return
+    }
+    const info = {
+      userId: id,
+      userNm: name,
+      email: email,
+    }
+    await axios
+      .post('http://localhost:4000/users', info)
+      .then((res) => {
+        console.log(res)
+        Router.push('/pw/set')
+      })
+      .catch((error) => {
+        console.log(error)
+        alert(error.desc)
+      })
+  }, [id, name, email])
 
-  const LabelInfo = useMemo(() => {
-    return [
-      { name: 'id', text: '아이디' },
-      { name: 'name', text: '이름' },
-      { name: 'email', text: '이메일' },
-    ]
-  }, [])
+  const hasError = useMemo(() => {
+    return idError || nameError || emailError
+  }, [idError, nameError, emailError])
 
   return (
     <Container>
-      {LabelInfo.map((v) => {
-        return (
-          <LabelInput
-            key={v.name}
-            name={v.name}
-            text={v.text}
-            value={info[v.name]}
-            onChange={handleChange}
-          />
-        )
-      })}
+      <LabelInput
+        text="아이디"
+        value={id}
+        placeHolder="영문+숫자 조합으로 2~20자 입력하세요"
+        onChange={handleChangeId}
+        isError={idError}
+      />
+      <LabelInput
+        text="이름"
+        value={name}
+        placeHolder="8자 이내로 입력하세요"
+        onChange={handleChangeName}
+        isError={nameError}
+      />
+      <LabelInput
+        text="이메일"
+        value={email}
+        placeHolder="이메일 형식을 입력해주세요"
+        onChange={handleChangeEmail}
+        isError={emailError}
+      />
       <SignButton onClick={handleClickFind}>비밀번호 찾기</SignButton>
     </Container>
   )
