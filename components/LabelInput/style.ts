@@ -8,7 +8,7 @@ export const Container = styled.div`
 `
 export const LabelContainer = styled.div`
   padding: 20px;
-  padding-bottom: 5px;
+  padding-bottom: 2px;
   font-size: 15px;
 `
 
@@ -27,4 +27,5 @@ export const InputContainer = styled.input<{ isError: boolean }>`
 export const ErrorContainer = styled.div`
   padding-left: 20px;
   color: red;
+  font-size: 13px;
 `
