@@ -1,17 +1,10 @@
 import { useState, useCallback, useMemo } from 'react'
-import { Container, SignButton } from '../../components/SignUp/style'
-import LabelInput from '../../components/LabelInput/LabelInput'
+import { Container, SignButton } from 'components/SignUp/style'
+import LabelInput from 'components/LabelInput/LabelInput'
 import axios from 'axios'
 import Router from 'next/router'
 
 const FindPassword = () => {
-  const [info, setInfo] = useState<{ id: string; name: string; email: string }>(
-    {
-      id: '',
-      name: '',
-      email: '',
-    }
-  )
   // input field state
   const [id, setId] = useState<string>('')
   const [name, setName] = useState<string>('')
@@ -22,44 +15,74 @@ const FindPassword = () => {
   const [nameError, setNameError] = useState<boolean>(false)
   const [emailError, setEmailError] = useState<boolean>(false)
 
+  // Error Message
+  const [idMessage, setIdMessage] = useState<string>('')
+  const [nameMessage, setNameMessage] = useState<string>('')
+  const [emailMessage, setEmailMessage] = useState<string>('')
+
   const handleChangeId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value
+      const value = e.target.value
+      setId(value)
+    },
+    []
+  )
+  const handleBlurId = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
       const regId = /^[a-z0-9+]*$/
-      setId(newValue)
-      if (!regId.test(newValue) || newValue.length === 0) {
+      if (!regId.test(value) || value.length === 0) {
         setIdError(true)
+        setIdMessage('2~20자의 영문 소문자와 숫자의 조합으로 입력해주세요.')
       } else {
         setIdError(false)
       }
     },
-    [idError]
+    [idError, idMessage]
   )
 
   const handleChangeName = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value
-      setName(newValue)
-      if (2 <= newValue.length && newValue.length <= 8) {
-        setNameError(false)
-      } else setNameError(true)
+      const value = e.target.value
+      setName(value)
     },
-    [nameError]
+    []
   )
 
-  // /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+  const handleBlurName = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      if (value.length <= 8) {
+        setNameError(false)
+      } else {
+        setNameError(true)
+        setNameMessage('8자 이내로 입력하세요.')
+      }
+    },
+    [nameError, nameMessage]
+  )
+
   const handleChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value
+      const value = e.target.value
+      setEmail(value)
+    },
+    []
+  )
+
+  const handleBlurEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
       const regEmail =
         /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-
-      setEmail(newValue)
-      if (regEmail.test(newValue)) {
+      if (regEmail.test(value)) {
         setEmailError(false)
-      } else setEmailError(true)
+      } else {
+        setEmailError(true)
+        setEmailMessage('이메일 형식을 입력해주세요.')
+      }
     },
-    [emailError]
+    [emailError, emailMessage]
   )
 
   const handleClickFind = useCallback(async () => {
@@ -93,23 +116,26 @@ const FindPassword = () => {
       <LabelInput
         text="아이디"
         value={id}
-        placeHolder="영문+숫자 조합으로 2~20자 입력하세요"
         onChange={handleChangeId}
         isError={idError}
+        onBlur={handleBlurId}
+        errorMessage={idMessage}
       />
       <LabelInput
         text="이름"
         value={name}
-        placeHolder="8자 이내로 입력하세요"
         onChange={handleChangeName}
         isError={nameError}
+        onBlur={handleBlurName}
+        errorMessage={nameMessage}
       />
       <LabelInput
         text="이메일"
         value={email}
-        placeHolder="이메일 형식을 입력해주세요"
         onChange={handleChangeEmail}
         isError={emailError}
+        onBlur={handleBlurEmail}
+        errorMessage={emailMessage}
       />
       <SignButton onClick={handleClickFind}>비밀번호 찾기</SignButton>
     </Container>
