@@ -1,17 +1,10 @@
 import { useState, useCallback, useMemo } from 'react'
-import { Container, SignButton } from '../../components/SignUp/style'
-import LabelInput from '../../components/LabelInput/LabelInput'
+import { Container, SignButton } from 'components/SignUp/style'
+import LabelInput from 'components/LabelInput/LabelInput'
 import axios from 'axios'
 import Router from 'next/router'
 
 const FindPassword = () => {
-  const [info, setInfo] = useState<{ id: string; name: string; email: string }>(
-    {
-      id: '',
-      name: '',
-      email: '',
-    }
-  )
   // input field state
   const [id, setId] = useState<string>('')
   const [name, setName] = useState<string>('')
@@ -22,18 +15,24 @@ const FindPassword = () => {
   const [nameError, setNameError] = useState<boolean>(false)
   const [emailError, setEmailError] = useState<boolean>(false)
 
+  // Error Message
+  const [idMessage, setIdMessage] = useState<string>('')
+  const [nameMessage, setNameMessage] = useState<string>('')
+  const [emailMessage, setEmailMessage] = useState<string>('')
+
   const handleChangeId = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value
-      const regId = /^[a-z0-9+]*$/
-      setId(newValue)
-      if (!regId.test(newValue) || newValue.length === 0) {
-        setIdError(true)
-      } else {
-        setIdError(false)
-      }
+      const value = e.target.value
+      setId(value)
     },
-    [idError]
+    []
+  )
+  const handleBlurId = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      const regId = /^[a-z0-9+]*$/
+    },
+    []
   )
 
   const handleChangeName = useCallback(

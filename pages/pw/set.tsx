@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import { Container, SignButton } from '../../components/SignUp/style'
-import LabelInput from '../../components/LabelInput/LabelInput'
+import { Container, SignButton } from 'components/SignUp/style'
+import LabelInput from 'components/LabelInput/LabelInput'
 import axios from 'axios'
 import Router from 'next/router'
 

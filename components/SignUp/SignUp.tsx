@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Container, SignButton } from './style'
-import LabelInput from '../LabelInput/LabelInput'
+import LabelInput from 'components/LabelInput/LabelInput'
+
 import axios from 'axios'
 import Router from 'next/router'
 

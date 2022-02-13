@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
-import LabelInput from '../LabelInput/LabelInput'
+import LabelInput from 'components/LabelInput/LabelInput'
 import {
   FormContainer,
   ButtonContainer,
