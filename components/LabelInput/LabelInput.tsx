@@ -12,11 +12,11 @@ const LabelInput = (props: LabelInputProps) => {
     text,
     value,
     type = 'text',
-    placeHolder,
     isError = false,
     errorMessage = '',
     onChange,
     onKeyPress,
+    onBlur,
   } = props
 
   return (
@@ -27,10 +27,10 @@ const LabelInput = (props: LabelInputProps) => {
         onChange={onChange}
         type={type}
         isError={isError}
-        placeholder={placeHolder}
         onKeyPress={onKeyPress}
+        onBlur={onBlur}
       />
-      {/* {isError && <ErrorContainer>{errorMessage}</ErrorContainer>} */}
+      {isError && <ErrorContainer>{errorMessage}</ErrorContainer>}
     </Container>
   )
 }
