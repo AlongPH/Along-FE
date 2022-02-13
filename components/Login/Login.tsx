@@ -11,10 +11,6 @@ import LoginProps from './interface'
 import axios from 'axios'
 
 const Login = ({ closeModal }: LoginProps) => {
-  const [user, setUser] = useState<{ id: string; pw: string }>({
-    id: '',
-    pw: '',
-  })
   const [id, setId] = useState('')
   const [pw, setPw] = useState('')
 
@@ -66,9 +62,6 @@ const Login = ({ closeModal }: LoginProps) => {
           type="password"
           onChange={handleChangePw}
           onKeyPress={handleClickEnter}
-          isError
-          errorMessage="test"
-          placeHolder="영문+숫자+특수문자를 8~20자 입력하세요"
         />
       </FormContainer>
       <ButtonContainer>
