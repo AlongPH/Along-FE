@@ -118,7 +118,7 @@ const SignForm = () => {
         setNameMessage('8자 이내로 입력하세요.')
       }
     },
-    []
+    [nameError, nameMessage]
   )
 
   // /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
